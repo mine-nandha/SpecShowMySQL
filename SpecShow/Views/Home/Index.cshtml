@@ -1,0 +1,184 @@
+﻿@model IEnumerable<SpecShow.Models.Mobile>
+
+@{
+	ViewData["Title"] = "Index";
+}
+@section status{
+	@if (ViewContext.HttpContext.Session.GetInt32("UserID") != null)
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Logout" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout"><i class="fa-solid fa-person-running fa-xl"></i></a>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Login" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log In/Sign Up"><i class="fa-solid fa-user-plus"></i></a>
+		</li>
+	}
+}
+
+<!-- carousel -->
+<div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+	<div class="carousel-indicators">
+		<button type="button"
+				data-mdb-target="#carouselExampleCaptions"
+				data-mdb-slide-to="0"
+				class="active"
+				aria-current="true"
+				aria-label="Slide 1"></button>
+		<button type="button"
+				data-mdb-target="#carouselExampleCaptions"
+				data-mdb-slide-to="1"
+				aria-label="Slide 2"></button>
+		<button type="button"
+				data-mdb-target="#carouselExampleCaptions"
+				data-mdb-slide-to="2"
+				aria-label="Slide 3"></button>
+	</div>
+	<div class="carousel-inner">
+		<div class="carousel-item active">
+			<img src="~/img/Smartphones-2017.jpg" class="d-block w-100" alt="Wild Landscape" />
+			<div class="mask" style="background-color: rgba(0, 0, 0, 0.4)"></div>
+			<div class="carousel-caption d-none d-sm-block mb-5">
+				<h1 class="mb-4">
+					<strong style="color : white">Easy Comparison</strong>
+				</h1>
+				<p class="mb-4 d-none d-md-block">
+					<strong>
+						Users can easily view the key specifications of multiple devices side by side on one screen.
+					</strong>
+				</p>
+
+				<a target="_blank" asp-Controller="Compare" class="btn btn-outline-white btn-lg">
+					Start Comparing
+					<i class="fas fa-mobile ms-2"></i>
+				</a>
+			</div>
+		</div>
+		<div class="carousel-item">
+			<img src="~/img/Stuff-Best-Smartphone-Lead.jpg" class="d-block w-100" alt="Camera" />
+			<div class="mask" style="background-color: rgba(0, 0, 0, 0.4)"></div>
+			<div class="carousel-caption d-none d-md-block mb-5">
+				<h1 class="mb-4">
+					<strong style="color : white">Smart filtering</strong>
+				</h1>
+
+				<p class="mb-4 d-none d-md-block">
+					<strong>
+						The app enables users to filter devices based on their preferences. For instance, users can filter devices based on their budget, camera quality, display resolution, and more.
+					</strong>
+				</p>
+				<a target="_blank" asp-Controller="Compare" class="btn btn-outline-white btn-lg">
+					Start Comparing
+					<i class="fas fa-mobile ms-2"></i>
+				</a>
+			</div>
+		</div>
+		<div class="carousel-item">
+			<img src="~/img/The-Best-Smartphones-for-2023-1024x576.jpg" class="d-block w-100" alt="Exotic Fruits" />
+			<div class="mask" style="background-color: rgba(0, 0, 0, 0.4)"></div>
+			<div class="carousel-caption d-none d-md-block mb-5">
+				<h1 class="mb-4">
+					<strong style="color : white">Detailed device information</strong>
+				</h1>
+				<p class="mb-4 d-none d-md-block">
+					<strong>
+						Users can view information about the device's display type, storage type, connectivity options, and more.
+					</strong>
+				</p>
+
+				<a target="_blank" asp-Controller="Compare" class="btn btn-outline-white btn-lg">
+					Start Comparing
+					<i class="fas fa-mobile ms-2"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+	<button class="carousel-control-prev" type="button" data-mdb-target="#carouselExampleCaptions" data-mdb-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Previous</span>
+	</button>
+	<button class="carousel-control-next" type="button" data-mdb-target="#carouselExampleCaptions" data-mdb-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">Next</span>
+	</button>
+</div>
+<div style="padding:.5rem; display: flex; justify-content:flex-end;">
+	<form id="sortForm" method="get" asp-action="Index">
+		<input type="hidden" name="search" value="@ViewData["Search"]" />
+		<input type="hidden" name="sortBy" value="" />
+	</form>
+	<div class="dropdown">
+		<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+			Sort By:
+		</button>
+		<ul class="dropdown-menu">
+			<li><a class="dropdown-item" onclick="sort('name')">Name</a></li>
+			<li><a class="dropdown-item" onclick="sort('priceLow')">Price:Low to High</a></li>
+			<li><a class="dropdown-item" onclick="sort('priceHigh')">Price:High to Low</a></li>
+			<li><a class="dropdown-item" onclick="sort('topRatings')">Top Ratings</a></li>
+		</ul>
+	</div>
+</div>
+<section>
+	<div class="text-center">
+		<div class="row">
+			@foreach (var item in Model)
+			{
+				<div class="col-lg-3 col-md-6 mb-4">
+					<div style="height:30vw" class="card">
+						<div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+						 data-mdb-ripple-color="light">
+							<img src="@item.ImageUrl" style="max-height: 100%; max-width: 100%;" />
+							<a asp-action="Details" asp-route-id="@item.MobileID">
+								<div class="mask">
+									<div class="d-flex justify-content-start align-items-end h-100">
+										<h5><span class="badge bg-danger ms-2">@item.Rating</span></h5>
+									</div>
+								</div>
+								<div class="hover-overlay">
+									<div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+								</div>
+							</a>
+						</div>
+						<div class="card-body">
+							<a asp-action="Details" asp-route-id="@item.MobileID">
+								<h5 class="card-title mb-2">@item.MobileName</h5>
+							</a>
+							<a asp-controller="Brands" asp-action="@item.Brand" class="text-reset">
+								<p>@item.Brand</p>
+							</a>
+							<h6 class="mb-3 price">₹@item.Price</h6>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</section>
+
+@section Scripts{
+	<script>
+		function sort(sortBy) {
+			var form = document.getElementById('sortForm');
+			form.elements['sortBy'].value = sortBy;
+			form.submit();
+		}
+		// Function to display errors
+		$(function () {
+			// Check if the ViewBag contains an error message
+			var errorMessage = '@ViewBag.ErrorMessage';
+			if (errorMessage) {
+				// Show the alert
+				var alert = $('<div class="alert alert-danger" role="alert"></div>').text(errorMessage);
+				$('#alert-container').prepend(alert);
+
+				// Fade out after 3 seconds
+				setTimeout(function () {
+					alert.fadeOut();
+				}, 3000);
+			}
+		});
+	</script>
+		}

@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - SpecShow</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.lux.css" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/SpecShow.styles.css" asp-append-version="true" />
+
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom fixed-top box-shadow mb-3">
+			<div class="container-fluid">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SpecShow</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"><i class="fa-solid fa-bars"></i></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav mx-auto">
+						<li class="nav-item">
+							<a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Home"><i class="fa-solid fa-house fa-xl"></i></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" asp-area="" asp-controller="Brands" asp-action="Index" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View By Brands"><i class="fa-solid fa-eye fa-xl"></i></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index" data-bs-toggle="tooltip" data-bs-placement="bottom" title="User"><i class="fa-solid fa-user fa-xl"></i></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" asp-area="" asp-controller="Favourites" asp-action="Index" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Favourites"><i class="fa-solid fa-heart fa-xl"></i><span id="fav-count" class="badge rounded-pill badge-notification bg-danger"></span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" asp-area="" asp-controller="Compare" asp-action="Index" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Compare"><i class="fa-solid fa-mobile fa-xl"></i></a>
+						</li>
+						<form class="d-flex" role="search" asp-controller="Home" asp-action="Index" method="get" id="searchForm">
+							<input class="form-control me-2" placeholder="Search" aria-label="Search" name="search" type="text" id="autocomplete">
+							<button class="btn btn-outline-success" type="submit">Search</button>
+						</form>
+						@await RenderSectionAsync("status", required: false)
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container" style="padding-top:5rem">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2023 - SpecShow - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+	@*<script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>*@
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script>
+		$(function () {
+			$("#autocomplete").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: "/Home/GetSearchResults",
+						type: "GET",
+						dataType: "json",
+						data: {
+							query: request.term
+						},
+						success: function (data) {
+							response(data);
+						}
+					});
+				},
+				minLength: 2,
+				select: function (event, ui) {
+					$("#autocomplete").val(ui.item.value);
+					return false;
+				}
+			});
+		});
+		function updateFavoritesCount() {
+			// send AJAX request to get favorites count from server
+			$.get("/Favourites/GetCount", function (count) {
+				if (count > 0) {
+					$("#fav-count").text(count).show(); // update and show the span element if count is greater than zero
+				} else {
+					$("#fav-count").hide(); // hide the span element if count is zero
+				} // update the span element with count
+			});
+		}
+		$(document).ready(function () {
+			// update the favorites count when the page is loaded
+			updateFavoritesCount();
+			// bind the click event of document to update the count
+			$(document).click(function () {
+				updateFavoritesCount();
+			});
+		});
+	</script>
+	@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

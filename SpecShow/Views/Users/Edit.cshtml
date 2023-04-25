@@ -1,0 +1,73 @@
+﻿@model SpecShow.Models.User
+
+@{
+	ViewData["Title"] = "Edit";
+}
+@section status{
+	<li class="nav-item" style="padding-left:2rem;">
+		<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Logout" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout"><i class="fa-solid fa-person-running fa-xl"></i></a>
+	</li>
+}
+<h1>Edit</h1>
+<div id="alert-container"></div>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="UserID" />
+			<div class="form-group">
+				<label asp-for="UserName" class="control-label"></label>
+				<input asp-for="UserName" class="form-control" />
+				<span asp-validation-for="UserName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="FullName" class="control-label"></label>
+				<input asp-for="FullName" class="form-control" />
+				<span asp-validation-for="FullName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="UserEmail" class="control-label"></label>
+				<input asp-for="UserEmail" class="form-control" />
+				<span asp-validation-for="UserEmail" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Password" class="control-label"></label>
+				<input asp-for="Password" class="form-control" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts{
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+		// Function to display errors
+		$(function () {
+			// Check if the ViewBag contains an error message
+			var errorMessage = '@ViewBag.ErrorMessage';
+			if (errorMessage) {
+				// Show the alert
+				var alert = $('<div class="alert alert-danger" role="alert"></div>').text(errorMessage);
+				$('#alert-container').prepend(alert);
+
+				// Fade out after 3 seconds
+				setTimeout(function () {
+					alert.fadeOut();
+				}, 3000);
+			}
+		});
+	</script>
+}

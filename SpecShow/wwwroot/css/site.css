@@ -1,0 +1,55 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+  overflow-x:hidden;
+}
+
+body {
+    margin-bottom: 60px;
+    overflow-x: hidden;
+    word-wrap: break-word;
+}
+
+/*MDN*/
+.carousel-item {
+    height: 50vh;
+}
+.card {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.footer-cta {
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px;
+}
+
+.price {
+    color: #263238;
+    font-size: 24px;
+}
+
+.card-title {
+    color: #263238
+}
+
+.sale {
+    color: #E53935
+}
+
+.sale-badge {
+    background-color: #E53935
+}
+

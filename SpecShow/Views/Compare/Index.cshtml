@@ -1,0 +1,106 @@
+﻿@model CompareViewModel
+@{
+	ViewData["Title"] = "Compare";
+}
+@section status{
+	@if (ViewContext.HttpContext.Session.GetInt32("UserID") != null)
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Logout" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout"><i class="fa-solid fa-person-running fa-xl"></i></a>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Login" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log In/Sign Up"><i class="fa-solid fa-user-plus"></i></a>
+		</li>
+	}
+}
+<form asp-controller="Compare" asp-action="Index" class="row" id="searchForm">
+	<h1 style="text-align:center">Compare</h1>
+	<div class="col-sm-6">
+		<input asp-for="FirstMobile.MobileName" type="text" placeholder="Add a mobile..." class="form-control" style="text-align:center" />
+	</div>
+	<div class="col-sm-6">
+		<input asp-for="SecondMobile.MobileName" type="text" placeholder="Add a mobile..." class="form-control" style="text-align:center" />
+	</div>
+	<div class="col-sm-12 d-flex justify-content-center" style="padding:1rem">
+		<input type="submit" value="Compare" class="btn btn-primary" />
+	</div>
+</form>
+@if (!(Model == null))
+{
+	<div class="row">
+		<div class="col-6" style="text-align:center">
+			<img src="@Model.FirstMobile.ImageUrl" style="height:50vh">
+		</div>
+		<div class="col-6" style="text-align:center">
+			<img src="@Model.SecondMobile.ImageUrl" style="height:50vh">
+		</div>
+		<div class="row" style="padding: 0.5rem 0; font-size:1.5rem;text-align:center; font-weight:600; color:black;">
+			<div class="col-6">@Model.FirstMobile.MobileName</div>
+			<div class="col-6">@Model.SecondMobile.MobileName</div>
+		</div>
+		@foreach (var item in typeof(Mobile).GetProperties())
+		{
+			@if (!(new List<string>() { "MOBILEID", "MOBILENAME", "IMAGEURL", "AMAZONURL", "FLIPKARTURL" }.Contains(item.Name.ToUpper())))
+			{
+				<div class="row" style="text-align:center;">
+					<h6 style="padding:.5rem 0; border-radius:0.3rem;background-color:#4F4F4F; color: white">@item.Name</h6>
+					<div class="col-6">@item.GetValue(Model.FirstMobile)</div>
+					<div class="col-6">@item.GetValue(Model.SecondMobile)</div>
+					<hr />
+				</div>
+			}
+		}
+	</div>
+}
+
+
+@section Scripts {
+	<script>
+		$(function () {
+			$("#FirstMobile_MobileName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: "/Home/GetSearchResults",
+						type: "GET",
+						dataType: "json",
+						data: {
+							query: request.term
+						},
+						success: function (data) {
+							response(data);
+						}
+					});
+				},
+				minLength: 2,
+				select: function (event, ui) {
+					$("#FirstMobile_MobileName").val(ui.item.value);
+					return false;
+				}
+			});
+			$("#SecondMobile_MobileName").autocomplete({
+				source: function (request, response) {
+					$.ajax({
+						url: "/Home/GetSearchResults",
+						type: "GET",
+						dataType: "json",
+						data: {
+							query: request.term
+						},
+						success: function (data) {
+							response(data);
+						}
+					});
+				},
+				minLength: 2,
+				select: function (event, ui) {
+					$("#SecondMobile_MobileName").val(ui.item.value);
+					return false;
+				}
+			});
+		});
+	</script>
+
+}

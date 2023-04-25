@@ -1,0 +1,302 @@
+﻿@using Microsoft.EntityFrameworkCore
+@model SpecShow.Models.Mobile
+
+@{
+	ViewData["Title"] = @Html.DisplayFor(model => model.MobileName);
+}
+@section status{
+	@if (ViewContext.HttpContext.Session.GetInt32("UserID") != null)
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Logout" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout"><i class="fa-solid fa-person-running fa-xl"></i></a>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Login" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log In/Sign Up"><i class="fa-solid fa-user-plus"></i></a>
+		</li>
+	}
+}
+<h1>Details</h1>
+<div id="alert-container"></div>
+
+<div>
+	<h4>Mobile</h4>
+	<hr />
+	<div style="display: flex; justify-content: center; align-items: center; height: 50vh;">
+		<img src="@Model.ImageUrl" style="max-height: 100%; max-width: 100%;" /> <br />
+	</div>
+	<div style="display: flex; justify-content: center; align-items: center; padding:1rem 0">
+		<a href="@Model.FlipkartUrl" style="padding:0 1rem">
+			<img src="~/img/Flipkart.png" style="height:3rem"></img>
+		</a>
+		<a href="@Model.AmazonUrl" style="padding:0 1rem">
+			<img src="~/img/Amazon.png" style="height:2.2rem"></img>
+		</a>
+	</div>
+
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.MobileName)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.MobileName)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Model)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Model)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Price)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Price)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Brand)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Brand)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ScreenSize)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ScreenSize)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.FrontCamera)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.FrontCamera)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.BackCameras)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (string item in Model.BackCameras.Split("~"))
+				{
+					<li>@item</li>
+				}
+			</ul>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.OS)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.OS)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Sim)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (string item in Model.Sim.Split("~"))
+				{
+					<li>@item</li>
+				}
+			</ul>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Sensors)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (string item in Model.Sensors.Split("~"))
+				{
+					<li>@item</li>
+				}
+			</ul>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.BatteryCapacity)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.BatteryCapacity)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Colors)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (string item in Model.Colors.Split("~"))
+				{
+					<li>@item</li>
+				}
+			</ul>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Variants)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (string item in Model.Variants.Split("~"))
+				{
+					<li>@item</li>
+				}
+			</ul>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ReleaseDate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ReleaseDate)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Weight)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Weight)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Material)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (string item in Model.Material.Split("~"))
+				{
+					<li>@item</li>
+				}
+			</ul>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ResistanceCertificate)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ResistanceCertificate)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ScreenType)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ScreenType)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AspectRatio)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AspectRatio)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Resolution)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Resolution)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.OtherFeatures)
+		</dt>
+		<dd class="col-sm-10">
+			<ul>
+				@foreach (string item in Model.OtherFeatures.Split("~"))
+				{
+					<li>@item</li>
+				}
+			</ul>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Processor)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Processor)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Nanometer)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Nanometer)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.GPU)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.GPU)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.AntutuScores)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.AntutuScores)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Bluetooth)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Bluetooth)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.ChargingCapacity)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.ChargingCapacity)
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Rating)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Rating)
+		</dd>
+	</dl>
+</div>
+<div>
+	@if (ViewContext.HttpContext.Session.GetInt32("UserID") != null)
+	{
+		@if ((bool)ViewBag.isExists)
+		{
+			<button type="button" class="btn btn-danger" onclick="removeFavourite(@Model.MobileID, this)">Remove from favorites</button>
+		}
+		else
+		{
+			<button type="button" class="btn btn-primary" onclick="addFavourite(@Model.MobileID, this)">Add to favorites</button>
+		}
+	}
+	<a asp-action="Index">Back to List</a>
+</div>
+
+@section scripts {
+	<script>
+		function addFavourite(mobileId, button) {
+			console.log(mobileId);
+			$.ajax({
+				type: "POST",
+				url: "/Favourites/AddFavourite",
+				data: { mobileId: mobileId },
+				success: function () {
+					button.textContent = "Remove from favorites";
+					button.classList.remove("btn-primary");
+					button.classList.add("btn-danger");
+					button.onclick = function () { removeFavourite(mobileId, button); };
+					updateFavoritesCount();
+				}
+			});
+		}
+		function updateFavoritesCount() {
+			// send AJAX request to get favorites count from server
+			$.get("/Favourites/GetCount", function (count) {
+				if (count > 0) {
+					$("#fav-count").text(count).show(); // update and show the span element if count is greater than zero
+				} else {
+					$("#fav-count").hide(); // hide the span element if count is zero
+				} // update the span element with count
+			});
+		}
+		function removeFavourite(mobileId, button) {
+			console.log(mobileId);
+			$.ajax({
+				type: "POST",
+				url: "/Favourites/RemoveFavourite",
+				data: { mobileId: mobileId },
+				success: function () {
+					button.textContent = "Add to favorites";
+					button.classList.remove("btn-danger");
+					button.classList.add("btn-primary");
+					button.onclick = function () { addFavourite(mobileId, button); };
+				}
+			});
+		}
+	</script>
+}

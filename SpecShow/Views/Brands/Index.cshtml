@@ -1,0 +1,39 @@
+﻿@model IEnumerable<string>
+
+@{
+	ViewData["Title"] = "Index";
+}
+@section status{
+	@if (ViewContext.HttpContext.Session.GetInt32("UserID") != null)
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Logout" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Logout"><i class="fa-solid fa-person-running fa-xl"></i></a>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item" style="padding-left:2rem;">
+			<a class="nav-link" asp-area="" asp-controller="Users" asp-action="Login" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log In/Sign Up"><i class="fa-solid fa-user-plus"></i></a>
+		</li>
+	}
+}
+<h1 style="text-align:center">View By Brands</h1>
+
+<div class="row" style="padding-top: 2rem;">
+	@foreach (var name in Model)
+	{
+		<div class="col-sm-6 col-md-4 col-lg-3 mb-4 hover-zoom">
+			<a asp-action="@name">
+				<div class="card shadow" style="height: 0; padding-bottom: 100%;">
+					@{
+						string url = "/img/" + name + ".png";
+					}
+					<img class="card-img-top" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; object-fit:contain" src="@url" alt="@name image">
+					<div class="card-body">
+						<h5 class="card-title">@name</h5>
+					</div>
+				</div>
+			</a>
+		</div>
+	}
+</div>
